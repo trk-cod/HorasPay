@@ -59,6 +59,6 @@
     "win": { "target": ["nsis", "portable"] },
     "nsis": { "artifactName": "${productName}-Setup-${version}.${ext}", "oneClick": true, "perMachine": false, "allowToChangeInstallationDirectory": false, "createDesktopShortcut": true, "createStartMenuShortcut": true, "runAfterFinish": true, "installerLanguages": ["es_ES"] },
     "portable": { "artifactName": "${productName}-Portable-${version}.${ext}" },
-    "publish": [{ "provider": "github", "owner": "CAMBIAR_OWNER", "repo": "CAMBIAR_REPO" }]
+    "publish": [{ "provider": "github", "owner": "trk-cod", "repo": "HorasPay" }]
   }
 }
