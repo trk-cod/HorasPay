@@ -1,0 +1,6 @@
+@HorasPay.Api_HostAddress = http://localhost:5047
+
+GET {{HorasPay.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

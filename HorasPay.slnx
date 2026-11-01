@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/HorasPay.Api/HorasPay.Api.csproj" />
+    <Project Path="src/HorasPay.Domain/HorasPay.Domain.csproj" />
+    <Project Path="src/HorasPay.Infrastructure/HorasPay.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/HorasPay.Tests/HorasPay.Tests.csproj" />
+  </Folder>
+</Solution>

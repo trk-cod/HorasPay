@@ -1,0 +1,1 @@
+interface Window { horasPay?: { apiUrl: string; saveFile: (name: string, data: string) => Promise<boolean>; version: string; onNavigate: (callback: (path: string) => void) => void; onUpdateReady: (callback: () => void) => void; }; }

@@ -1,0 +1,17 @@
+bin/
+obj/
+node_modules/
+.npm-cache/
+dist/
+dist-api/
+dist-electron/
+release/
+.angular/
+.dotnet-cli/
+.nuget/
+*.db
+*.db-shm
+*.db-wal
+.env
+tmp/
+.electron-cache/
