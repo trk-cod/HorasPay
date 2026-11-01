@@ -1,0 +1,47 @@
+name: Crear release de Windows
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  empaquetar:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Instalar dependencias
+        run: npm ci --ignore-scripts
+      - name: Instalar runtime Electron
+        run: node node_modules/electron/install.js
+      - name: Restaurar .NET
+        run: dotnet restore HorasPay.slnx --configfile NuGet.Config
+      - name: Ejecutar pruebas
+        run: |
+          npm test
+          dotnet test HorasPay.slnx --no-restore
+      - name: Compilar y empaquetar
+        run: |
+          npm run web:build
+          npm run publish:api
+          npm run electron:build
+          npx electron-builder --win nsis portable --publish never
+          node scripts/checksums.mjs
+      - name: Publicar release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: pwsh
+        run: |
+          $tag = '${{ github.ref_name }}'
+          if ($tag -eq '') { $tag = 'v0.1.0' }
+          gh release create $tag release/*.exe release/*.blockmap release/latest.yml release/SHA256SUMS.txt --generate-notes --title "HorasPay $tag"
