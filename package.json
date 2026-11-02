@@ -1,6 +1,6 @@
 {
   "name": "horaspay",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "description": "HorasPay: control de jornadas y pagos para Windows.",
   "author": "HorasPay",
@@ -14,7 +14,7 @@
     "test": "jasmine --config=frontend/jasmine.json",
     "test:e2e": "playwright test",
     "build": "npm run web:build && npm run electron:build",
-    "publish:api": "cross-env DOTNET_CLI_HOME=.dotnet-cli NUGET_PACKAGES=.nuget/packages dotnet publish src/HorasPay.Api -c Release -r win-x64 --self-contained -o dist-api --no-restore",
+    "publish:api": "dotnet publish src/HorasPay.Api -c Release -r win-x64 --self-contained -o dist-api",
     "release": "npm run web:build && npm run publish:api && npm run electron:build && electron-builder --win nsis portable && node scripts/checksums.mjs && node scripts/publish-release.mjs",
     "postinstall": "electron-builder install-app-deps"
   },

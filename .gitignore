@@ -15,3 +15,5 @@ release/
 .env
 tmp/
 .electron-cache/
+sitio-descargas/
+horaspay-descargas.tar.gz

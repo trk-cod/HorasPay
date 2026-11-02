@@ -25,7 +25,7 @@ jobs:
       - name: Instalar runtime Electron
         run: node node_modules/electron/install.js
       - name: Restaurar .NET
-        run: dotnet restore HorasPay.slnx --configfile NuGet.Config
+        run: dotnet restore HorasPay.slnx --runtime win-x64 --configfile NuGet.Config
       - name: Ejecutar pruebas
         run: |
           npm test
@@ -34,6 +34,7 @@ jobs:
         run: |
           npm run web:build
           npm run publish:api
+          if (!(Test-Path "dist-api/HorasPay.Api.exe")) { throw "No se generó HorasPay.Api.exe" }
           npm run electron:build
           npx electron-builder --win nsis portable --publish never
           node scripts/checksums.mjs
