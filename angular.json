@@ -19,7 +19,7 @@
             "outputPath": "dist/frontend"
           },
           "configurations": {
-            "production": { "budgets": [{ "type": "initial", "maximumWarning": "900kB", "maximumError": "1.1MB" }], "outputHashing": "all" },
+            "production": { "budgets": [{ "type": "initial", "maximumWarning": "900kB", "maximumError": "1.1MB" }], "outputHashing": "all", "baseHref": "./" },
             "development": { "optimization": false, "sourceMap": true }
           },
           "defaultConfiguration": "production"
