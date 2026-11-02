@@ -1,5 +1,4 @@
 import { app, BrowserWindow, dialog, ipcMain, Menu, shell } from 'electron';
-import { autoUpdater } from 'electron-updater';
 import { ChildProcess, spawn } from 'node:child_process';
 import { createServer } from 'node:net';
 import { promises as fs } from 'node:fs';
@@ -54,12 +53,18 @@ function crearMenu(): void {
     { label: 'Archivo', submenu: [{ label: 'Nueva jornada', accelerator: 'Ctrl+N', click: () => ventana?.webContents.send('navegar', '/registrar') }, { type: 'separator' }, { label: 'Exportar CSV', accelerator: 'Ctrl+E', click: () => ventana?.webContents.send('exportar-csv') }, { type: 'separator' }, { role: 'quit', label: 'Salir' }] },
     { label: 'Editar', submenu: [{ role: 'undo', label: 'Deshacer' }, { role: 'redo', label: 'Rehacer' }, { type: 'separator' }, { role: 'cut', label: 'Cortar' }, { role: 'copy', label: 'Copiar' }, { role: 'paste', label: 'Pegar' }] },
     { label: 'Ver', submenu: [{ role: 'reload', label: 'Recargar' }, { role: 'toggleDevTools', label: 'Herramientas de desarrollo' }, { type: 'separator' }, { role: 'togglefullscreen', label: 'Pantalla completa' }] },
-    { label: 'Ayuda', submenu: [{ label: 'Ayuda y atajos', accelerator: 'F1', click: () => ventana?.webContents.send('navegar', '/ayuda') }, { label: 'Guía de instalación', click: () => void shell.openExternal('https://github.com/CAMBIAR_OWNER/CAMBIAR_REPO') }] }
+    { label: 'Ayuda', submenu: [{ label: 'Ayuda y atajos', accelerator: 'F1', click: () => ventana?.webContents.send('navegar', '/ayuda') }, { label: 'Guía de instalación', click: () => void shell.openExternal('https://github.com/trk-cod/HorasPay') }] }
   ]));
 }
 
-function configurarActualizador(): void {
+async function configurarActualizador(): Promise<void> {
   if (esDesarrollo) return;
+  let autoUpdater: typeof import('electron-updater').autoUpdater;
+  try {
+    ({ autoUpdater } = await import('electron-updater'));
+  } catch {
+    return;
+  }
   autoUpdater.autoDownload = true;
   autoUpdater.on('update-downloaded', () => ventana?.webContents.send('actualizacion-lista'));
   autoUpdater.checkForUpdates().catch(() => undefined);
@@ -69,7 +74,7 @@ function configurarActualizador(): void {
 if (!app.requestSingleInstanceLock()) app.quit();
 else {
   app.on('second-instance', () => { if (!ventana) return; if (ventana.isMinimized()) ventana.restore(); ventana.focus(); });
-  app.whenReady().then(async () => { await mostrarSplash('Preparando tus datos…'); await iniciarApi(); await mostrarSplash('Abriendo HorasPay…'); await crearVentana(); crearMenu(); configurarActualizador(); });
+  app.whenReady().then(async () => { await mostrarSplash('Preparando tus datos…'); await iniciarApi(); await mostrarSplash('Abriendo HorasPay…'); await crearVentana(); crearMenu(); void configurarActualizador(); });
 }
 app.on('window-all-closed', () => app.quit());
 app.on('before-quit', () => { api?.kill(); });
